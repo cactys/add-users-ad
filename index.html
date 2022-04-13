@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./pages/index.css">
   <title>Файлик</title>
 </head>
 
@@ -15,21 +16,25 @@
     </header>
 
     <main class="contant">
-
+      <section class="users">
+        <button class="users__add-user-button" type="button">Добавить</button>
+      </section>
     </main>
 
-    <div class="popup popup__type_add-user">
+    <div class="popup popup_type_add-user popup_opened">
       <div class="popup__container">
         <button class="popup__close-button" type="button">Закрыть</button>
         <form action="/" method="POST" class="form" name="add-use">
           <h3 class="form__title">Добавить пользователя</h3>
           <div class="form__field">
             <label for="first-name" class="form__label">Имя</label>
-            <input type="text" placeholder="Имя" class="form__input" name="first-name" id="first-name" minlength="2" maxlength="40" required="">
+            <input type="text" placeholder="Имя" class="form__input" name="first-name" id="first-name" minlength="2"
+              maxlength="40" required="">
           </div>
           <div class="form__field">
             <label for="last-name" class="form__label">Фамилия</label>
-            <input type="text" placeholder="Фамилия" class="form__input" name="last-name" id="last-name" minlength="2" maxlength="40" required="">
+            <input type="text" placeholder="Фамилия" class="form__input" name="last-name" id="last-name" minlength="2"
+              maxlength="40" required="">
           </div>
         </form>
       </div>
@@ -39,6 +44,55 @@
 
     </footer>
   </div>
+  <script>
+    const addUser = document.querySelector('.users__add-user-button');
+    const closeButton = document.querySelectorAll('.popup__close-button');
+    const activePopup = document.querySelector('.popup_opened');
+    const popupUser = document.querySelector('.popup_type_add-user');
+
+    // ==== popup ====
+    // function закрыть popup
+    function closePopup(popupName) {
+      popupName.classList.remove('popup_opened');
+
+      document.removeEventListener('keydown', handleHotkey);
+      document.removeEventListener('click', handleOverlayClick);
+    }
+
+    // function открыть popup
+    function openPopup(popupName) {
+      popupName.classList.add('popup_opened');
+
+      document.addEventListener('keydown', handleHotkey);
+      document.addEventListener('mousedown', handleOverlayClick);
+    }
+
+    // function горячей клавиши
+    function handleHotkey(evt) {
+      if (activePopup && evt.key === 'Escape') {
+        closePopup(activePopup);
+      }
+    }
+
+    // function нажать в любое место мышкой
+    function handleOverlayClick(evt) {
+      if (activePopup && evt.target === activePopup) {
+        closePopup(activePopup);
+      }
+    }
+
+    // ==== button ====
+    // button close popup
+    closeButton.forEach(function (arrElement) {
+      arrElement.addEventListener('click', function () {
+        closePopup(this.closest('.popup'));
+      });
+    });
+
+    // button open popup
+    addUser.addEventListener('click', function () { openPopup(popupUser); });
+
+  </script>
 </body>
 
 </html>
